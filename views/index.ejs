@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+<h1><%= title %></h1>
+<p>Welcome to <%= title %></p>
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src='/socket.io/socket.io.js'></script>
+<div id="message-list"></div>
+<br/>
+<input type="text" id="message"/>
+<button id="sendMessage">Send</button>
+<script>
+    $("document").ready(function(){
+        var socket = io();
+        var username = prompt("Please enter your name", "Hussam from Oman");
+
+        socket.on('new message', function(data) {
+            $("#message-list").append("<div>"+data.message+". from: "+data.user+" </div>");
+        });
+        $("#sendMessage").click(function () {
+            socket.emit("send message",{message: $("#message").val(), user: username});
+        });
+
+    });
+
+</script>
+</body>
+</html>
